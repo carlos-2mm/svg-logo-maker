@@ -1,6 +1,7 @@
 // Packages needed for this application
 const inquirer = require("inquirer"); // For prompting questions and collecting user input
 const fs = require("fs"); // For filesystem operations
+const path = require('path');
 const { Triangle, Circle, Square } = require("./lib/shapes"); // Importing shape classes from the shapes module
 
 // Function to collect user input
@@ -43,17 +44,21 @@ function collectInput() {
 // Function to generate an SVG logo based on the provided input
 function generateLogo(input) {
   let shape; // To store the chosen shape object
+  let textY;  // Y position for text centering
 
   // Determine which shape was selected and create the corresponding object
   switch (input.shape) {
     case "triangle":
       shape = new Triangle(input.shapeColor);
+      textY = "133";  // Adjusted for the triangle
       break;
     case "circle":
       shape = new Circle(input.shapeColor);
+      textY = "110";  // Close to the center for the circle
       break;
     case "square":
       shape = new Square(input.shapeColor);
+      textY = "150";  // Center for the square
       break;
   }
 
@@ -61,16 +66,32 @@ function generateLogo(input) {
   const svgContent = `
     <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
       ${shape.render()}
-      <text x="150" y="110" font-family="Arial" font-size="48" text-anchor="middle" fill="${
+      <text x="150" y="${textY}" font-family="Arial" font-size="48" text-anchor="middle" fill="${
         input.textColor
       }">${input.text}</text>
     </svg>
   `;
 
-  // Write the SVG content to a file named "logo.svg"
-  fs.writeFileSync("logo.svg", svgContent);
-  // Notify the user that the logo has been generated
-  console.log("Generated logo.svg");
+  // Define the filename
+  const filename = "logo.svg";
+
+  // Specify the directory where you want to save the file
+  const directory = 'output';
+
+  // Ensure the directory exists
+  if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory);
+  }
+
+  // Use the path.join method to create the full path
+  const fullPath = path.join(directory, filename);
+
+  try {
+      fs.writeFileSync(fullPath, svgContent);
+      console.log(`Generated ${fullPath}`);
+  } catch (error) {
+      console.error("Error generating the SVG file:", error);
+  }
 }
 
 // Collect user input and then generate the logo based on that input
