@@ -1,6 +1,6 @@
 
     <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="150" cy="100" r="100" fill="#845EC2" />
-      <text x="150" y="110" font-family="Arial" font-size="48" text-anchor="middle" fill="#F9F871">CM</text>
+      <circle cx="150" cy="100" r="100" fill="#FF9671" />
+      <text x="150" y="110" font-family="Arial" font-size="48" text-anchor="middle" fill="#1B6299">CM</text>
     </svg>
   
